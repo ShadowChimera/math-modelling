@@ -1,0 +1,94 @@
+body {
+    min-height: 100vh;
+}
+
+.chart {
+    max-width: 100%;
+    width: auto;
+    /* height: 500px; */
+    min-height: 400px;
+
+    display: flex;
+}
+
+.chart > * {
+    flex: 1 1 0;
+    /* width: 100% !important; */
+}
+
+.chart.enlarged {
+    height: 75vh;
+}
+
+.chart-container {
+    position: relative;
+}
+
+.chart-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    opacity: .6;
+}
+
+.chart-placeholder > * {
+    width: 100%;
+}
+
+.chart-container:has(.chart[data-built]) .chart-placeholder {
+    display: none;
+}
+
+.data-input {
+    /* box-shadow: 0 0 4px rgba(222, 226, 230, 0.75); */
+    /* min-width: 250px; */
+}
+
+.buttons-container {
+    grid-template-columns: repeat(2, auto);
+    
+}
+
+@media screen and 
+        (min-width: 970px) and 
+        (max-width: 1400px) 
+{
+    .main-content {
+        /* display: grid; */
+        /* grid-template-columns: auto 3fr; */
+        /* justify-items: stretch; */
+
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1rem;
+    }
+
+    .data-input {
+        width: auto;
+    }
+
+    .main-content__col:not(.main-content__col:has(.data-input)) {
+        flex: 3 1 0;
+    }
+
+    .main-content__col:has(.data-input) {
+        min-width: 200px;
+        flex: 1 1 0;
+    }
+
+    .data-input__row {
+        flex-direction: column;
+    }
+
+    .data-input__item {
+        width: 100%;
+    }
+
+    .buttons-container {
+        flex-direction: column-reverse;
+    }
+}

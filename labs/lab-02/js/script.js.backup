@@ -1,0 +1,218 @@
+submitButton.onclick = () => {
+    const chartElement = document.querySelector('#chart_1')
+    chartElement.dataset.built = true
+    buildChart('Модель физического процесса', 'Время', 'X(t)')
+}
+
+const myVariant = {
+    x1Start: 18,
+    x: 2,
+
+    mStart: 1100 /*  / 1000 */,
+    mStop: 1900 /*  / 1000 */,
+    mStep: 400 /*  / 1000 */,
+
+    cStart: 20000 /*  / 1000 */,
+    cStop: 30000 /*  / 1000 */,
+    cStep: 5000 /*  / 1000 */,
+
+    kStart: 3400 /*  / 1000 */,
+    kStop: 4000 /*  / 1000 */,
+    kStep: 300 /*  / 1000 */,
+
+    tStart: 0,
+    tStop: 5,
+    tStep: 0.0005,
+}
+
+setPlaceholdersForVariant(myVariant)
+buildChart('Модель физического процесса', 'Время', 'X(t)')
+
+// * Lab
+getChartData = () => {
+    const formData = new FormData(document.querySelector('#labDataForm'))
+
+    let inputData = Object.assign({}, myVariant)
+
+    for (inputDataKey in inputData) {
+        if ((formData.get(inputDataKey) ?? '') !== '') {
+            inputData[inputDataKey] = formData.get(inputDataKey)
+        }
+
+        // inputData[inputDataKey] =
+        //     formData.get(inputDataKey) ?? myVariant[inputDataKey]
+
+        // if (inputData[inputDataKey] === '') {
+        //     inputData[inputDataKey] = myVariant[inputDataKey]
+        // }
+
+        inputData[inputDataKey] = Number(inputData[inputDataKey])
+    }
+
+    const models = []
+    const modelsArguments = []
+
+    let forcedStopIterationBorder = 1000
+    let iteration = 0
+    for (
+        let m = inputData.mStart, c = inputData.cStart, k = inputData.kStart;
+        m <= inputData.mStop + 1e-6;
+        m += inputData.mStep, c += inputData.cStep, k += inputData.kStep
+    ) {
+        const [modelArguments, model] = modelEquation(
+            inputData.x,
+            inputData.x1Start,
+            m,
+            c,
+            k,
+            inputData.tStart,
+            inputData.tStop,
+            inputData.tStep
+        )
+
+        models.push(model)
+        modelsArguments.push(modelArguments)
+
+        if (++iteration >= forcedStopIterationBorder) {
+            console.log('Forced Loop Stopping')
+            break
+        }
+    }
+
+    console.log(modelsArguments[0])
+    console.log(models[0])
+
+    return [models[0], modelsArguments[0]]
+}
+
+function modelEquation(x, x1, m, c, k, tStart, tStop, tStep) {
+    // let result = 0
+
+    // result += k * x1
+    // result += c * x
+    // todo result += m * dx1 / dt
+
+    const func = (t, x, dx = x1) => {
+        console.log('ебанулся???')
+        console.log(m * dx * t)
+        console.log(k * dx)
+        console.log(c * x)
+        console.log('/ебанулся')
+
+        //prettier-ignore
+        return (m * dx * t) + (k * dx) + (c * x)
+    }
+
+    const eulerMethodIterationCount = (tStop - tStart) / tStep
+
+    // const model = EulerMethod(eulerMethodIterationCount, tStep, tStart, x, func)
+    const model = EulerMethod_2(
+        eulerMethodIterationCount,
+        tStep,
+        tStart,
+        x,
+        myVariant
+    )
+
+    /* 
+        * m * d^2x / dt^2 + k * dx / dt + cx = P
+        
+        ? dx / dt = f(t, x)
+
+        * m * d^2x / dt^2 + k * f(t, x) + cx = P
+
+
+        * dx / dt = f(t, x)
+        * x{t=t_0} = x_0
+
+        * решение ищется на интервале (t_0, b]
+        
+        * x_i = x_i-1 + (t_i - t_i-1) * f(t_i-1, x_i-1),
+
+        ? t_i - t_i-1 = step = h
+        ? i = 1, 2, 3, ..., n
+        ? n = (b - t_0) / h
+
+        * x_i = x_i-1 + h * f(t_i-1, x_i-1)
+
+    */
+
+    let modelResults = []
+    let modelArguments = []
+    for (let i = 0; i < model[1].length; i++) {
+        modelResults.push(m * model[1][i] + k * model[0][i] + c * x)
+        modelArguments.push(tStep * i + tStart)
+    }
+
+    return [modelArguments, modelResults]
+    // return model
+}
+
+function EulerMethod(n, h, x, y, func) {
+    // y_i+1 = y_i + h * f(x_i; y_i)
+    //
+    // h -- step
+
+    // const results = [[x, y]]
+
+    const results_x = [x]
+    const results_y = [func(x, y)]
+
+    for (let i = 0; i < n; i++) {
+        console.log(x)
+        console.log(y)
+        console.log('```````````````')
+
+        y += h * func(x, y)
+        x += h
+
+        // results.push([x, y])
+        results_x.push(x)
+        results_y.push(y)
+    }
+
+    return [results_x, results_y]
+}
+
+function EulerMethod_2(n, h, x, y, inputData) {
+    const x1_0 = 2
+    const x2_0 = 18
+
+    // x1_i+1 = x1_i + h * x2_i
+    // x2_i+1 = x2_i + h * (-k * x2_i - c * x1_i + P) / m
+
+    let func = (
+        x1,
+        x2,
+        k = inputData.kStart,
+        c = inputData.cStart,
+        m = inputData.mStart
+    ) => {
+        const P = 0
+
+        return (-k * x2 - c * x1 + P) / m
+    }
+
+    // const results_x = [x]
+    // const results_y = [func(x, y)]
+
+    let x1 = [x1_0]
+    let x2 = [x2_0]
+
+    for (let i = 0; i < n; i++) {
+        let x1_prev = x1[x1.length - 1]
+        let x2_prev = x2[x2.length - 1]
+
+        x1.push(x1_prev + h * x2_prev)
+        x2.push(x2_prev + h * func(x1_prev, x2_prev))
+    }
+
+    console.log(x1)
+    console.log(x2)
+
+    return [x1, x2]
+}
+
+function degToRad(deg) {
+    return deg * (Math.PI / 180.0)
+}
