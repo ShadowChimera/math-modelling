@@ -1,9 +1,9 @@
 // * Bootstrap
 const tooltipTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  document.querySelectorAll('[data-bs-toggle="tooltip"]')
 )
 const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
+  return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
 // * Form
@@ -14,162 +14,173 @@ const clearButton = document.querySelector('#clear-button')
 clearButton.onclick = clearInputData
 
 function setPlaceholdersForVariant(variant) {
-    const form = document.querySelector('#labDataForm')
+  const form = document.querySelector('#labDataForm')
 
-    for (variantDataKey in variant) {
-        const input = form.querySelector(`input[name=${variantDataKey}]`)
-        if (input) {
-            input.placeholder = variant[variantDataKey]
-        }
+  for (variantDataKey in variant) {
+    const input = form.querySelector(`input[name=${variantDataKey}]`)
+    if (input) {
+      input.placeholder = variant[variantDataKey]
     }
+  }
 }
 
 function clearInputData() {
-    const formInputs = document.querySelectorAll('#labDataForm input')
+  const formInputs = document.querySelectorAll('#labDataForm input')
 
-    formInputs.forEach((formInput) => {
-        formInput.value = ''
-    })
+  formInputs.forEach((formInput) => {
+    formInput.value = ''
+  })
+}
+
+// * Form Data
+function getFormData(defaultData) {
+  const formData = new FormData(document.querySelector('#labDataForm'))
+
+  let inputData = Object.assign({}, defaultData)
+
+  for (inputDataKey in inputData) {
+    if ((formData.get(inputDataKey) ?? '') !== '') {
+      inputData[inputDataKey] = formData.get(inputDataKey)
+    }
+
+    inputData[inputDataKey] = Number(inputData[inputDataKey])
+  }
+
+  return inputData
 }
 
 // * Chart
 
 let getChartData = () => {
-    return [[], [0, 1]]
+  return [[], [0, 1]]
 }
 
 function buildChart(chartTitle, xText, yText, chartType = 'spline') {
-    let [chartData, categories] = getChartData()
+  let [chartData, categories] = getChartData()
 
-    // console.log(chartData)
-    // chartData = chartData[0]
-    // console.log(chartData)
+  let series = []
 
-    console.log(chartData[0])
+  if (typeof chartData[0] === 'object') {
+    console.log('multiple charts')
 
-    let series = []
-
-    if (typeof chartData[0] === 'object') {
-        console.log('multiple charts')
-
-        chartData.forEach((data) => {
-            series.push({ data: data })
-        })
-    } else {
-        series.push({ data: chartData })
-    }
-
-    const chart = Highcharts.chart('chart_1', {
-        chart: {
-            type: chartType,
-        },
-        title: {
-            text: chartTitle,
-        },
-        xAxis: {
-            title: {
-                text: xText,
-            },
-            categories: categories,
-        },
-        yAxis: {
-            title: {
-                text: yText,
-            },
-        },
-
-        legend: { enabled: false },
-
-        plotOptions: {
-            series: {
-                animation: {
-                    duration: 1000,
-                },
-            },
-        },
-
-        series: series,
-
-        // series: [
-        //     {
-        //         data: chartData,
-        //     },
-        // ],
+    chartData.forEach((data) => {
+      series.push({ data: data })
     })
+  } else {
+    series.push({ data: chartData })
+  }
+
+  const chart = Highcharts.chart('chart_1', {
+    chart: {
+      type: chartType,
+    },
+    title: {
+      text: chartTitle,
+    },
+    xAxis: {
+      title: {
+        text: xText,
+      },
+      categories: categories,
+    },
+    yAxis: {
+      title: {
+        text: yText,
+      },
+    },
+
+    legend: { enabled: false },
+
+    plotOptions: {
+      series: {
+        animation: {
+          duration: 1000,
+        },
+      },
+    },
+
+    series: series,
+
+    // series: [
+    //     {
+    //         data: chartData,
+    //     },
+    // ],
+  })
 }
 
 function buildOneChart(chartData, categories) {
-    const chart = Highcharts.chart('chart_1', {
-        chart: {
-            type: chartType,
-        },
-        title: {
-            text: chartTitle,
-        },
-        xAxis: {
-            title: {
-                text: xText,
-            },
-            categories: categories,
-        },
-        yAxis: {
-            title: {
-                text: yText,
-            },
-        },
+  const chart = Highcharts.chart('chart_1', {
+    chart: {
+      type: chartType,
+    },
+    title: {
+      text: chartTitle,
+    },
+    xAxis: {
+      title: {
+        text: xText,
+      },
+      categories: categories,
+    },
+    yAxis: {
+      title: {
+        text: yText,
+      },
+    },
 
-        legend: { enabled: false },
+    legend: { enabled: false },
 
-        plotOptions: {
-            series: {
-                animation: {
-                    duration: 1000,
-                },
-            },
+    plotOptions: {
+      series: {
+        animation: {
+          duration: 1000,
         },
+      },
+    },
 
-        series: [
-            {
-                data: chartData,
-            },
-        ],
-    })
+    series: [
+      {
+        data: chartData,
+      },
+    ],
+  })
 }
 
 function buildMultipleCharts(chartData, categories) {
-    const chart = Highcharts.chart('chart_1', {
-        chart: {
-            type: chartType,
-        },
-        title: {
-            text: chartTitle,
-        },
-        xAxis: {
-            title: {
-                text: xText,
-            },
-            categories: categories,
-        },
-        yAxis: {
-            title: {
-                text: yText,
-            },
-        },
+  const chart = Highcharts.chart('chart_1', {
+    chart: {
+      type: chartType,
+    },
+    title: {
+      text: chartTitle,
+    },
+    xAxis: {
+      title: {
+        text: xText,
+      },
+      categories: categories,
+    },
+    yAxis: {
+      title: {
+        text: yText,
+      },
+    },
 
-        legend: { enabled: false },
+    legend: { enabled: false },
 
-        plotOptions: {
-            series: {
-                animation: {
-                    duration: 1000,
-                },
-            },
+    plotOptions: {
+      series: {
+        animation: {
+          duration: 1000,
         },
+      },
+    },
 
-        series: [
-            {
-                data: chartData,
-            },
-        ],
-    })
+    series: [
+      {
+        data: chartData,
+      },
+    ],
+  })
 }
