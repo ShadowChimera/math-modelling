@@ -1,93 +1,138 @@
 submitButton.onclick = () => {
     const chartElement = document.querySelector('#chart_1')
     chartElement.dataset.built = true
-    buildChart('Модель содержания полезного компонента', 'Время', '')
+    buildChart(
+        'Зависимость максимальной перегрузки от начальной скорости движения шахтной клети',
+        'Начальная скорость',
+        'Максимальная перегрузка'
+    )
 }
 
 const myVariant = {
-    muStart: 0.12,
-    muStop: 2.5,
-    muStep: 0.05,
+    x1Start: 10,
+    x: 0,
+    y1Start: 10,
+    y: 0.001,
 
-    roStart: 1.2,
-    roStop: 6,
-    roStep: 0.1,
+    mStart: 2000,
+    mStop: 3000,
+    mStep: 500,
 
-    dStart: 1.5,
-    dStop: 6.3,
-    dStep: 0.1,
+    cStart: 2000,
+    cStop: 22000,
+    cStep: 10000,
 
-    N0: 25000,
-    mu2: 0.12,
+    kStart: 1000,
+    kStop: 2000,
+    kStep: 500,
+
+    tStart: 0,
+    tStop: 1,
+    tStep: 0.0005,
 }
 
 setPlaceholdersForVariant(myVariant)
-buildChart('Модель содержания полезного компонента', 'Время', '')
+buildChart(
+    'Зависимость максимальной перегрузки от начальной скорости движения шахтной клети',
+    'Начальная скорость',
+    'Максимальная перегрузка'
+)
 
 // * Lab
 getChartData = () => {
-    let inputData = getFormData(myVariant)
+    let inputData = Object.assign({}, myVariant)
 
-    const model = []
-    const modelArguments = []
+    const func = (x, k, g = 9.8) => {
+        return (k * x) / g
+    }
 
-    const iterationArgsKeys = ['mu', 'ro', 'd']
-    let iterationArgs = {}
+    let k = inputData.kStart
+    k = 4
 
-    iterationArgsKeys.forEach((key) => {
-        iterationArgs[key] = inputData[`${key}Start`]
+    startSpeedArguments = [10, 7.5, 5, 2.5]
+
+    model = []
+    modelArguments = []
+
+    startSpeedArguments.forEach((startSpeed) => {
+        modelArguments.push(startSpeed)
+        model.push(func(startSpeed, k))
     })
-
-    const condition = (key, value) => {
-        return value <= inputData[`${key}Stop`] + 1e-6
-    }
-
-    let forcedStopIterationBorder = 1000
-
-    for (
-        let iteration = 0;
-        iteration < forcedStopIterationBorder;
-        iteration++
-    ) {
-        if (
-            !condition(
-                iterationArgsKeys[0],
-                iterationArgs[iterationArgsKeys[0]]
-            )
-        ) {
-            break
-        }
-
-        model.push(
-            modelEquation(
-                iterationArgs.mu,
-                iterationArgs.ro,
-                iterationArgs.d,
-                inputData.N0,
-                inputData.mu2
-            )
-        )
-
-        modelArguments.push(iteration)
-
-        iterationArgsKeys.forEach((key) => {
-            iterationArgs[key] += inputData[`${key}Step`]
-        })
-    }
-
-    console.log(model)
 
     return [model, modelArguments]
 }
 
-function modelEquation(mu, ro, d, N, mu2) {
-    N_b = buger(N, mu, ro, d)
+function modelEquation(x, x1, y, y1, m, c, k, tStart, tStop, tStep) {
+    let mDefault = m,
+        cDefault = c,
+        kDefault = k
 
-    q = (1 / (mu - mu2)) * ((1 / (ro * d)) * Math.log(N / N_b)) - mu2
+    let func = (
+        x1,
+        x2,
+        y1,
+        y2,
+        k = kDefault,
+        c = cDefault,
+        m = mDefault,
+        g = 9.8
+    ) => {
+        let cage, cargo
 
-    return q
+        cage = -(g + (k * x2) / m - (c * (y1 - x1)) / m)
+        cargo = -(g + (c * (y1 - x1)) / m)
+
+        // ! for 6th lecture
+        // P = k * x2
+
+        return [cage, cargo /* , P */]
+    }
+
+    const eulerMethodIterationCount = (tStop - tStart) / tStep
+
+    const model = EulerMethod(
+        eulerMethodIterationCount,
+        tStep,
+        x,
+        x1,
+        y,
+        y1,
+        func
+    )
+
+    let modelArguments = []
+    for (let i = 0; i < model[1].length; i++) {
+        modelArguments.push(Number((tStep * i + tStart).toFixed(4)))
+    }
+
+    return [modelArguments, model[1], model[3], model[4]]
 }
 
-function buger(N0, mu, ro, d) {
-    return N0 * Math.exp(-mu * ro * d)
+function EulerMethod(n, h, x1_0, x2_0, y1_0, y2_0, func) {
+    let x1 = [x1_0]
+    let x2 = [x2_0]
+
+    let y1 = [y1_0]
+    let y2 = [y2_0]
+
+    // let Ps = []
+
+    for (let i = 0; i < n; i++) {
+        let x1_prev = x1[x1.length - 1]
+        let x2_prev = x2[x2.length - 1]
+
+        let y1_prev = y1[y1.length - 1]
+        let y2_prev = y2[y2.length - 1]
+
+        x1.push(x1_prev + h * x2_prev)
+        y1.push(y1_prev + h * y2_prev)
+
+        let [cage, cargo /* , P */] = func(x1_prev, x2_prev, y1_prev, y2_prev)
+
+        x2.push(x2_prev + h * cage)
+        y2.push(y2_prev + h * cargo)
+        // Ps.push(P)
+    }
+
+    return [x1, x2, y1, y2]
 }

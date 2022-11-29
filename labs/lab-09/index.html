@@ -4,20 +4,20 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>ММСП. Лабораторная работа №6</title>
+        <title>ММСП. Лабораторная работа №9</title>
 
         <!-- ? Bootstrap -->
-        <!-- <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    /> -->
-        <!-- ? Bootstrap local -->
         <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+        <!-- ? Bootstrap local -->
+        <!-- <link
             href="../../modules/bootstrap-5.0.2-dist/css/bootstrap.min.css"
             rel="stylesheet"
-        />
+        /> -->
 
         <link href="../../css/style.css" rel="stylesheet" />
     </head>
@@ -180,10 +180,10 @@
 
         <div class="container-xxl pb-3">
             <div class="header text-center mb-4">
-                <div class="h5 title">Лабораторная работа №6</div>
+                <div class="h5 title">Лабораторная работа №9</div>
                 <div class="h4 subtitle">
-                    Пример моделирования физического процесса "Шахтная клеть"
-                    (Продолжение)
+                    Математическая модель интенсивности рассеянного
+                    гамма-излучения
                 </div>
             </div>
             <div class="main-content row gy-3">
@@ -194,7 +194,7 @@
                         id="labDataForm"
                     >
                         <div class="data-input__row row">
-                            <div class="group-title form-label">Масса</div>
+                            <div class="group-title form-label"></div>
                             <div class="data-input__item col-sm-4 mb-3">
                                 <div
                                     class="input-group"
@@ -203,16 +203,16 @@
                                     title="Начальное значение"
                                 >
                                     <label
-                                        for="labDataForm_mStart"
+                                        for="labDataForm_dStart"
                                         class="input-group-text"
                                     >
-                                        m<sub>0</sub>
+                                        d<sub>0</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="mStart"
-                                        id="labDataForm_mStart"
+                                        name="dStart"
+                                        id="labDataForm_dStart"
                                     />
                                 </div>
                             </div>
@@ -224,16 +224,16 @@
                                     title="Конечное значение"
                                 >
                                     <label
-                                        for="labDataForm_mStop"
+                                        for="labDataForm_dStop"
                                         class="input-group-text"
                                     >
-                                        m<sub>k</sub>
+                                        d<sub>k</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="mStop"
-                                        id="labDataForm_mStop"
+                                        name="dStop"
+                                        id="labDataForm_dStop"
                                     />
                                 </div>
                             </div>
@@ -245,23 +245,24 @@
                                     title="Шаг"
                                 >
                                     <label
-                                        for="labDataForm_mStep"
+                                        for="labDataForm_dStep"
                                         class="input-group-text"
                                     >
-                                        dm
+                                        dd
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="mStep"
-                                        id="labDataForm_mStep"
+                                        name="dStep"
+                                        id="labDataForm_dStep"
                                     />
                                 </div>
                             </div>
                         </div>
                         <div class="data-input__row row">
                             <div class="group-title form-label">
-                                Коэффициент трения
+                                Угол падения гамма-излучения на исследуемую
+                                поверхность
                             </div>
                             <div class="data-input__item col-sm-4 mb-3">
                                 <div
@@ -271,16 +272,16 @@
                                     title="Начальное значение"
                                 >
                                     <label
-                                        for="labDataForm_kStart"
+                                        for="labDataForm_alphaStart"
                                         class="input-group-text"
                                     >
-                                        k<sub>0</sub>
+                                        α<sub>0</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="kStart"
-                                        id="labDataForm_kStart"
+                                        name="alphaStart"
+                                        id="labDataForm_alphaStart"
                                     />
                                 </div>
                             </div>
@@ -292,16 +293,16 @@
                                     title="Конечное значение"
                                 >
                                     <label
-                                        for="labDataForm_kStop"
+                                        for="labDataForm_alphaStop"
                                         class="input-group-text"
                                     >
-                                        k<sub>k</sub>
+                                        α<sub>k</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="kStop"
-                                        id="labDataForm_kStop"
+                                        name="alphaStop"
+                                        id="labDataForm_alphaStop"
                                     />
                                 </div>
                             </div>
@@ -313,23 +314,23 @@
                                     title="Шаг"
                                 >
                                     <label
-                                        for="labDataForm_kStep"
+                                        for="labDataForm_alphaStep"
                                         class="input-group-text"
                                     >
-                                        dk
+                                        dα
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="kStep"
-                                        id="labDataForm_kStep"
+                                        name="alphaStep"
+                                        id="labDataForm_alphaStep"
                                     />
                                 </div>
                             </div>
                         </div>
                         <div class="data-input__row row">
                             <div class="group-title form-label">
-                                Жесткость пружины
+                                Расстояние от источника до детектора
                             </div>
                             <div class="data-input__item col-sm-4 mb-3">
                                 <div
@@ -339,16 +340,16 @@
                                     title="Начальное значение"
                                 >
                                     <label
-                                        for="labDataForm_cStart"
+                                        for="labDataForm_RStart"
                                         class="input-group-text"
                                     >
-                                        c<sub>0</sub>
+                                        R<sub>0</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="cStart"
-                                        id="labDataForm_cStart"
+                                        name="RStart"
+                                        id="labDataForm_RStart"
                                     />
                                 </div>
                             </div>
@@ -360,16 +361,16 @@
                                     title="Конечное значение"
                                 >
                                     <label
-                                        for="labDataForm_cStop"
+                                        for="labDataForm_RStop"
                                         class="input-group-text"
                                     >
-                                        c<sub>k</sub>
+                                        R<sub>k</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="cStop"
-                                        id="labDataForm_cStop"
+                                        name="RStop"
+                                        id="labDataForm_RStop"
                                     />
                                 </div>
                             </div>
@@ -381,116 +382,25 @@
                                     title="Шаг"
                                 >
                                     <label
-                                        for="labDataForm_cStep"
+                                        for="labDataForm_RStep"
                                         class="input-group-text"
                                     >
-                                        dc
+                                        dR
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="cStep"
-                                        id="labDataForm_cStep"
+                                        name="RStep"
+                                        id="labDataForm_RStep"
                                     />
                                 </div>
                             </div>
                         </div>
                         <div class="data-input__row row">
                             <div class="group-title form-label">
-                                Клеть, начальные условия
+                                Расстояние от детектора до исследуемой
+                                поверхности
                             </div>
-                            <div class="data-input__item col-sm-4 mb-3">
-                                <div
-                                    class="input-group"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title=""
-                                >
-                                    <label
-                                        for="labDataForm_x"
-                                        class="input-group-text"
-                                    >
-                                        x
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="x"
-                                        id="labDataForm_x"
-                                    />
-                                </div>
-                            </div>
-                            <div class="data-input__item col-sm-4 mb-3">
-                                <div
-                                    class="input-group"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title=""
-                                >
-                                    <label
-                                        for="labDataForm_x1Start"
-                                        class="input-group-text"
-                                    >
-                                        x<sub>1</sub>[0]
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="x1Start"
-                                        id="labDataForm_x1Start"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="data-input__row row">
-                            <div class="group-title form-label">
-                                Груз, начальные условия
-                            </div>
-                            <div class="data-input__item col-sm-4 mb-3">
-                                <div
-                                    class="input-group"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title=""
-                                >
-                                    <label
-                                        for="labDataForm_y"
-                                        class="input-group-text"
-                                    >
-                                        y
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="y"
-                                        id="labDataForm_y"
-                                    />
-                                </div>
-                            </div>
-                            <div class="data-input__item col-sm-4 mb-3">
-                                <div
-                                    class="input-group"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title=""
-                                >
-                                    <label
-                                        for="labDataForm_y1Start"
-                                        class="input-group-text"
-                                    >
-                                        y<sub>1</sub>[0]
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        name="y1Start"
-                                        id="labDataForm_y1Start"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="data-input__row row">
-                            <div class="group-title form-label">Время</div>
                             <div class="data-input__item col-sm-4 mb-3">
                                 <div
                                     class="input-group"
@@ -499,16 +409,16 @@
                                     title="Начальное значение"
                                 >
                                     <label
-                                        for="labDataForm_tStart"
+                                        for="labDataForm_hStart"
                                         class="input-group-text"
                                     >
-                                        t<sub>0</sub>
+                                        h<sub>0</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="tStart"
-                                        id="labDataForm_tStart"
+                                        name="hStart"
+                                        id="labDataForm_hStart"
                                     />
                                 </div>
                             </div>
@@ -520,16 +430,16 @@
                                     title="Конечное значение"
                                 >
                                     <label
-                                        for="labDataForm_tStop"
+                                        for="labDataForm_hStop"
                                         class="input-group-text"
                                     >
-                                        t<sub>k</sub>
+                                        h<sub>k</sub>
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="tStop"
-                                        id="labDataForm_tStop"
+                                        name="hStop"
+                                        id="labDataForm_hStop"
                                     />
                                 </div>
                             </div>
@@ -541,16 +451,82 @@
                                     title="Шаг"
                                 >
                                     <label
-                                        for="labDataForm_tStep"
+                                        for="labDataForm_hStep"
                                         class="input-group-text"
                                     >
-                                        dt
+                                        dh
                                     </label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="tStep"
-                                        id="labDataForm_tStep"
+                                        name="hStep"
+                                        id="labDataForm_hStep"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-input__row row">
+                            <div class="group-title form-label">Остальное</div>
+                            <div class="data-input__item col-sm-4 mb-3">
+                                <div
+                                    class="input-group"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title="Активность источника гамма-излучения"
+                                >
+                                    <label
+                                        for="labDataForm_Q"
+                                        class="input-group-text"
+                                    >
+                                        Q
+                                    </label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="Q"
+                                        id="labDataForm_Q"
+                                    />
+                                </div>
+                            </div>
+                            <!-- <div class="data-input__item col-sm-4 mb-3">
+                                <div
+                                    class="input-group"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title=""
+                                >
+                                    <label
+                                        for="labDataForm_N"
+                                        class="input-group-text"
+                                    >
+                                        N
+                                    </label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="N"
+                                        id="labDataForm_N"
+                                    />
+                                </div>
+                            </div> -->
+                            <div class="data-input__item col-sm-4 mb-3">
+                                <div
+                                    class="input-group"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title=""
+                                >
+                                    <label
+                                        for="labDataForm_A"
+                                        class="input-group-text"
+                                    >
+                                        A
+                                    </label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="A"
+                                        id="labDataForm_A"
                                     />
                                 </div>
                             </div>
@@ -590,18 +566,18 @@
         </div>
 
         <!-- ? Bootstrap -->
-        <!-- <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-      crossorigin="anonymous"
-    ></script> -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"
+        ></script>
         <!-- ? highcharts -->
-        <!-- <script src="https://code.highcharts.com/highcharts.js"></script> -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
 
         <!-- ? Bootstrap local -->
-        <script src="../../modules/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+        <!-- <script src="../../modules/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script> -->
         <!-- ? highcharts local -->
-        <script src="../../modules/highcharts/code/highcharts.js"></script>
+        <!-- <script src="../../modules/highcharts/code/highcharts.js"></script> -->
 
         <!-- ? Global script -->
         <script src="../../js/script.js"></script>
